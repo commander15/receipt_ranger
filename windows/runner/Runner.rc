@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "receipe_ranger" "\0"
+            VALUE "FileDescription", "receipt_ranger" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "receipe_ranger" "\0"
+            VALUE "InternalName", "receipt_ranger" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2025 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "receipe_ranger.exe" "\0"
-            VALUE "ProductName", "receipe_ranger" "\0"
+            VALUE "OriginalFilename", "receipt_ranger.exe" "\0"
+            VALUE "ProductName", "receipt_ranger" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,6 +1,6 @@
 {
-    "name": "receipe_ranger",
-    "short_name": "receipe_ranger",
+    "name": "receipt_ranger",
+    "short_name": "receipt_ranger",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

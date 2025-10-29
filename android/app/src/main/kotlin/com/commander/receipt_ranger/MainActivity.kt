@@ -1,4 +1,4 @@
-package com.example.receipe_ranger
+package com.commander.receipt_ranger
 
 import io.flutter.embedding.android.FlutterActivity
 

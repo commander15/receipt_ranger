@@ -3,10 +3,10 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart' hide Barcode, BarcodeFormat;
-import 'package:receipe_ranger/models/receipt.dart';
-import 'package:receipe_ranger/screens/receipt_edit_screen.dart';
-import 'package:receipe_ranger/services/scan_service.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:receipt_ranger/models/receipt.dart';
+import 'package:receipt_ranger/screens/receipt_edit_screen.dart';
+import 'package:receipt_ranger/services/scan_service.dart';
 
 class CameraScreen extends StatefulWidget {
   final ScanService scanService;
@@ -70,20 +70,22 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: false,
-      body: FutureBuilder(
-        future: futureInitialize,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting ||
-              futureInitialize == null) {
-            return buildLoader(context);
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text('Error initializing camera: ${snapshot.error}'),
-            );
-          } else {
-            return buildUi(context);
-          }
-        },
+      body: SafeArea(
+        child: FutureBuilder(
+          future: futureInitialize,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting ||
+                futureInitialize == null) {
+              return buildLoader(context);
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error initializing camera: ${snapshot.error}'),
+              );
+            } else {
+              return buildUi(context);
+            }
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _getFromInput(context),
@@ -175,11 +177,19 @@ class _CameraScreenState extends State<CameraScreen> {
     );
 
     if (receipt == null) {
-      _showMessage(context, message: "Can't read receipt data !", color: Colors.pink);
+      _showMessage(
+        context,
+        message: "Can't read receipt data !",
+        color: Colors.pink,
+      );
     } else {
       if (!auto) {
-        DateTime date = await _askDate(context, receipt.number, receipt.date); 
-        _reportScan(date == receipt.date ? receipt : Receipt(number: receipt.number, date: date));
+        DateTime date = await _askDate(context, receipt.number, receipt.date);
+        _reportScan(
+          date == receipt.date
+              ? receipt
+              : Receipt(number: receipt.number, date: date),
+        );
       } else {
         _reportScan(receipt);
       }
@@ -196,7 +206,11 @@ class _CameraScreenState extends State<CameraScreen> {
     widget.onReceiptScanned(receipt);
   }
 
-  void _showMessage(BuildContext context, {required String message, Color? color}) {
+  void _showMessage(
+    BuildContext context, {
+    required String message,
+    Color? color,
+  }) {
     setState(() {
       messageText = message;
       messageColor = color ?? Colors.blueAccent;
@@ -227,16 +241,15 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void _getFromInput(BuildContext context) {
-    Navigator.of(context).pushReplacement(
+    Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) =>
-            ReceiptEditScreen(onSave: widget.onReceiptScanned),
+        builder: (context) => ReceiptEditScreen(
+          onSave: (receipt) {
+            Navigator.of(context).pop();
+            _reportScan(receipt);
+          },
+        ),
       ),
     );
-  }
-
-  void _storeReceipt(String number, DateTime date) {
-    final receipt = Receipt(number: number, date: date);
-    widget.onReceiptScanned(receipt);
   }
 }

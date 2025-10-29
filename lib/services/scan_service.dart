@@ -1,9 +1,10 @@
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:receipe_ranger/models/receipt.dart';
+import 'package:google_mlkit_barcode_scanning/google_mlkit_barcode_scanning.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
+import 'package:receipt_ranger/models/receipt.dart';
 
 class ScanService {
   DateTime _lastScanTime = DateTime.now();
-  final Duration _interval = Duration(seconds: 1);
+  final Duration _interval = Duration(milliseconds: 500);
 
   final dateRegExp = RegExp(r'(\d{2}\.\d{2}\.\d{4})( \d{2}:\d{2}:\d{2})?');
 

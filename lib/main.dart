@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:receipe_ranger/models/receipt.dart';
-import 'package:receipe_ranger/screens/home_screen.dart';
+import 'package:receipt_ranger/models/receipt.dart';
+import 'package:receipt_ranger/screens/home_screen.dart';
 
 Future<void> init(Function() run) async {
   WidgetsFlutterBinding.ensureInitialized();

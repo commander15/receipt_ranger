@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:receipe_ranger/models/receipt.dart';
+import 'package:receipt_ranger/models/receipt.dart';
+
+class ReceiptEditController {
+  String? number;
+  DateTime? date = DateTime.now();
+
+  Receipt get receipt =>
+      Receipt(number: number ?? '', date: date ?? DateTime(0));
+
+  ReceiptEditController({this.number, this.date});
+}
 
 class ReceiptEdit extends StatefulWidget {
   final String title;
-  final Function(Receipt receipt) onSave;
+  final ReceiptEditController? controller;
 
-  const ReceiptEdit({super.key, this.title = 'Receipt', required this.onSave});
+  const ReceiptEdit({super.key, this.title = 'Receipt', this.controller});
 
   @override
   State createState() => _ReceiptEditState();
@@ -13,41 +23,30 @@ class ReceiptEdit extends StatefulWidget {
 
 class _ReceiptEditState extends State<ReceiptEdit> {
   final TextEditingController numberController = TextEditingController();
-  final TextEditingController dateController = TextEditingController();
-  DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(widget.title)),
-      body: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.only(left: 16, right: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                keyboardType: TextInputType.numberWithOptions(),
-                controller: numberController,
-                decoration: InputDecoration(labelText: 'Receipt Number'),
-              ),
-              SizedBox(height: 16.0),
-              CalendarDatePicker(
-                initialDate: DateTime.now(),
-                firstDate: DateTime(2010),
-                lastDate: DateTime.now(),
-                onDateChanged: (value) => date = value,
-              ),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () => widget.onSave(
-                    Receipt(number: numberController.text, date: date),
-                  ),
-                  child: Text('Save'),
-                ),
-              ),
-            ],
-          ),
+    return SingleChildScrollView(
+      child: Container(
+        margin: EdgeInsets.only(left: 16, right: 16),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              autofocus: true,
+              keyboardType: TextInputType.numberWithOptions(),
+              controller: numberController,
+              decoration: InputDecoration(labelText: 'Receipt Number'),
+              onChanged: (value) => widget.controller?.number = value,
+            ),
+            SizedBox(height: 16.0),
+            CalendarDatePicker(
+              initialDate: DateTime.now(),
+              firstDate: DateTime(2010),
+              lastDate: DateTime.now(),
+              onDateChanged: (value) => widget.controller?.date = value,
+            ),
+          ],
         ),
       ),
     );
