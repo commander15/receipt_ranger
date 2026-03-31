@@ -40,7 +40,13 @@ class ScanService {
     if (dateMatch == null) {
       date = await onDateRequested(barcode.rawValue!);
     } else {
-      date = DateTime.parse(dateMatch.group(1)!.split('.').reversed.join('-') + (dateMatch.group(2) ?? 'T00:00:00'));
+      final datePart = dateMatch.group(1)!.split('.').reversed.join('-').trim();
+      final timePart = (dateMatch.group(2) ?? '00:00:00').trim();
+      final merged = '$datePart $timePart';
+      date = DateTime.parse(merged);
+      if (date.year < 2025 || date.year > now.year || date.month > now.month || date.day > now.day) {
+        date = await onDateRequested(barcode.rawValue!);
+      }
     }
 
     return Receipt(number: barcode.rawValue!, date: date);

@@ -18,13 +18,12 @@ class ReceiptService {
     // Extract unique dates by converting to a Set and back to List
     List<DateTime> dates = receipts
         .map(
-          (receipt) =>
-              DateTime(receipt.date.year, receipt.date.month, receipt.date.day),
+          (receipt) => DateTime(receipt.date.year, receipt.date.month, receipt.date.day),
         )
         .toSet()
         .toList();
 
-    dates.sort();
+    dates.sort((a, b) => b.compareTo(a));
     return dates;
   }
 
@@ -36,6 +35,10 @@ class ReceiptService {
           receipt.date.month == date.month &&
           receipt.date.day == date.day;
     }).toList()..sort((a, b) {
+      if (a.number.isEmpty && b.number.isNotEmpty) return 1;
+      if (b.number.isEmpty && a.number.isNotEmpty) return -1;
+      if (a.number.isEmpty && b.number.isEmpty) return 0;
+
       final number1 = a.number.substring(5);
       final number2 = b.number.substring(5);
       return number1.compareTo(number2);
