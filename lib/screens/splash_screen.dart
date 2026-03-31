@@ -7,7 +7,11 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
+<<<<<<< Updated upstream
         child: Image.asset('images/app_icon.png'),
+=======
+        child: Image.asset('images/app_icon.png', fit: BoxFit.contain),
+>>>>>>> Stashed changes
       ),
     );
   }
