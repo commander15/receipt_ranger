@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+<<<<<<< Updated upstream
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:receipt_ranger/models/receipt.dart';
@@ -10,6 +11,12 @@ import 'package:receipt_ranger/screens/receipt_edit_screen.dart';
 import 'package:receipt_ranger/services/receipt_service.dart';
 import 'package:receipt_ranger/services/scan_service.dart';
 import 'package:share_plus/share_plus.dart';
+=======
+import 'package:receipt_ranger/models/receipt.dart';
+import 'package:receipt_ranger/screens/camera_screen.dart';
+import 'package:receipt_ranger/services/receipt_service.dart';
+import 'package:receipt_ranger/services/scan_service.dart';
+>>>>>>> Stashed changes
 
 class ReceiptsScreen extends StatefulWidget {
   final ReceiptService receiptService;
@@ -43,7 +50,19 @@ class _ReceiptsScreenState extends State<ReceiptsScreen> {
   }
 
   void refresh() {
+<<<<<<< Updated upstream
     setState(_reload);
+=======
+    setState(() {
+      selected = null;
+      futureCount = widget.receiptService.getReceiptsCount();
+      futureDates = widget.receiptService.getReceiptsDates();
+      futureReceipts = widget.receiptService.getReceipts(date: date);
+      print("DATA REFRESH !");
+    });
+
+    widget.receiptService.backupReceipts();
+>>>>>>> Stashed changes
   }
 
   void setDate(DateTime? date) {
@@ -188,12 +207,16 @@ class _ReceiptsScreenState extends State<ReceiptsScreen> {
       );
     }
 
+<<<<<<< Updated upstream
     receipts.removeWhere((element) => _removedReceipts.contains(element));
 
+=======
+>>>>>>> Stashed changes
     return Expanded(
       child: ListView.builder(
         itemBuilder: (context, index) {
           final receipt = receipts[index];
+<<<<<<< Updated upstream
           return Dismissible(
             key: ValueKey(receipt),
             background: Container(
@@ -218,11 +241,22 @@ class _ReceiptsScreenState extends State<ReceiptsScreen> {
                 '${index + 1}',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
+=======
+          return ListTile(
+              selected: selected != null && selected == index,
+              selectedColor: Colors.redAccent,
+              leading: Icon(Icons.receipt, size: 32,),
+              trailing: Text('${index + 1}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+>>>>>>> Stashed changes
               title: Text(
                 receipt.number,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),
+<<<<<<< Updated upstream
               subtitle: _buildDate(context, receipt.date, withTime: true),
+=======
+              subtitle: buildDate(context, receipt.date, withTime: true),
+>>>>>>> Stashed changes
               onTap: () {
                 setState(() {
                   if (selected != null && selected == index) {
@@ -232,8 +266,12 @@ class _ReceiptsScreenState extends State<ReceiptsScreen> {
                   }
                 });
               },
+<<<<<<< Updated upstream
             ),
           );
+=======
+            );
+>>>>>>> Stashed changes
         },
         itemCount: receipts.length,
         shrinkWrap: true,

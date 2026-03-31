@@ -7,6 +7,13 @@ import 'package:receipt_ranger/models/receipt.dart';
 class ReceiptService {
   final Box<Receipt> box = Hive.box<Receipt>('receipts');
 
+<<<<<<< Updated upstream
+=======
+  ReceiptService() {
+    //restoreReceipts();
+  }
+
+>>>>>>> Stashed changes
   Future<int> getReceiptsCount() async {
     return box.length;
   }
@@ -109,6 +116,37 @@ class ReceiptService {
           date: DateTime.parse(receiptData['date']),
         ),
       );
+    }
+  }
+
+  Future<void> backupReceipts() async {
+    List<Receipt> receipts = await getReceipts();
+
+    mapper(Receipt receipt) {
+      return {
+        'number': receipt.number,
+        'date': receipt.date.toIso8601String(),
+      };
+    }
+
+    final Map<String, dynamic> json = {
+      'receipts': receipts.map(mapper).toList(),
+      'date': DateTime.now().toIso8601String(),
+    };
+
+    File backupFile = File('/storage/emulated/0/Download/receipts_backup.json');
+    await backupFile.writeAsString(json.toString());
+  }
+
+  Future<void> restoreReceipts() async {
+    File backupFile = File('/storage/emulated/0/Download/receipts_backup.json');
+    final raw = await backupFile.readAsString();
+
+    final Map<String, dynamic> json = jsonDecode(raw);
+    final List<Map<String, dynamic>> data = json['receipts'];
+
+    for (Map<String, dynamic> receiptData in data) {
+      await addReceipt(receipt: Receipt(number: receiptData['number'], date: DateTime.parse(receiptData['date'])));
     }
   }
 }

@@ -36,8 +36,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  late int _currentPage;
+  late List<Widget> _pages;
+
+  _HomeScreenState() {
+    _currentPage = -1;
+    _pages = [ReceiptsScreen(receiptService: receiptService)];
+  }
+
   @override
   Widget build(BuildContext context) {
+<<<<<<< Updated upstream
     return _currentScreen;
+=======
+    return (_currentPage < 0 ? SplashScreen() : _pages[_currentPage]);
+>>>>>>> Stashed changes
   }
 }
